@@ -7,9 +7,9 @@
 /**************/
 // デバッグ用 //
 /**************/
-// #define OUTPUT_PROBLEM // 生成した行列を表示するかどうか
-// #define CHECK_RESULT // 理論解（期待値）との比較をするかどうか
-// #define OUTPUT_RESIDUAL // 収束状況（残差）を表示するかどうか
+//#define OUTPUT_PROBLEM // 生成した行列を表示するかどうか
+//#define CHECK_RESULT // 理論解（期待値）との比較をするかどうか
+//#define OUTPUT_RESIDUAL // 収束状況（残差）を表示するかどうか
 
 
 /**************************************************/
