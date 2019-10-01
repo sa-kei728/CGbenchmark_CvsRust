@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Solver">
+      <UniqueIdentifier>{0a476ffb-9c70-478e-9595-2d9419e64a71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\cuda">
+      <UniqueIdentifier>{a20cb4aa-79d0-4ec0-9335-6d4547a3f000}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Vector.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Problem.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Solver.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SparseMatrix.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SolveOpenMPNative.hpp">
+      <Filter>ヘッダー ファイル\Solver</Filter>
+    </ClInclude>
+    <ClInclude Include="SolveSequentialNative.hpp">
+      <Filter>ヘッダー ファイル\Solver</Filter>
+    </ClInclude>
+    <ClInclude Include="SolveCuda.hpp">
+      <Filter>ヘッダー ファイル\Solver</Filter>
+    </ClInclude>
+    <ClInclude Include="cuda_runtime.hpp">
+      <Filter>ヘッダー ファイル\cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="cusparse.hpp">
+      <Filter>ヘッダー ファイル\cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="SolveCusparse.hpp">
+      <Filter>ヘッダー ファイル\Solver</Filter>
+    </ClInclude>
+    <ClInclude Include="Array.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="cublas.hpp">
+      <Filter>ヘッダー ファイル\cuda</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="SolveCuda.cu">
+      <Filter>ソース ファイル</Filter>
+    </CudaCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SolveCuda.cuhpp">
+      <Filter>ヘッダー ファイル\Solver</Filter>
+    </None>
+  </ItemGroup>
+</Project>

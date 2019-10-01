@@ -1,0 +1,7 @@
+*.sdf
+*.vs
+*opensdf
+
+Debug/
+Release
+/src/ConjugateGradient/*.pdb

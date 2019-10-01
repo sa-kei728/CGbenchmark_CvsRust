@@ -1,0 +1,69 @@
+COMPILER = clang++
+CFLAGS   = -g -m64 -MMD -MP -Wall -Wextra -Werror -Wfatal-errors -std=c++14 -stdlib=libc++ -O3 -march=native -mtune=native -fopenmp
+LDFLAGS  = ${CFLAGS}
+LIBS     =
+INCLUDE  = -I/opt/pzsdk.ver4.0/inc/
+TARGET   = ./$(shell basename `readlink -f .`)
+OBJDIR   = ./obj
+ifeq "$(strip $(OBJDIR))" ""
+  OBJDIR = .
+endif
+SOURCES  = $(wildcard *.cpp)
+OBJECTS  = $(addprefix $(OBJDIR)/, $(SOURCES:.cpp=.o))
+DEPENDS  = $(OBJECTS:.o=.d)
+
+#####################
+PZCL_KERNEL_DIRS = kernel
+
+PZSDK_PATH = /opt/pzsdk.ver4.0
+PZSDK_INC_PATH = $(PZSDK_PATH)/inc
+PZSDK_LIB_PATH = $(PZSDK_PATH)/lib
+
+INCLUDE += -I$(PZSDK_INC_PATH)
+LDFLAGS += -L$(PZSDK_LIB_PATH) -Xlinker -rpath -Xlinker $(PZSDK_LIB_PATH) -lpzcl
+
+all: make_pzcl_kernel $(TARGET)
+
+clean: clean_pzcl_kernel
+	rm -rf $(OBJDIR) $(TARGET)
+
+#####################
+$(TARGET): $(OBJECTS) $(LIBS)
+	$(COMPILER) -o $@ $^ $(LDFLAGS)
+
+$(OBJDIR)/%.o: %.cpp
+	@[ -d $(OBJDIR) ] || mkdir -p $(OBJDIR)
+	$(COMPILER) $(CFLAGS) $(INCLUDE) -o $@ -c $<
+
+#####################
+make_pzcl_kernel : $(PZCL_KERNEL_DIRS)
+	@for d in $(PZCL_KERNEL_DIRS); \
+	do \
+	(cd $$d && \
+	echo "" && \
+	echo "*******************************************************" && \
+	echo "* making in ./$$d" && \
+	echo "*******************************************************" && \
+	$(MAKE) && \
+	./convert.sh > kernel.pz.inc); \
+	if [ $$? -ne 0 ]; then \
+		echo "!!!!!! ERROR !!!!!!" ; exit 1; \
+	fi \
+	done
+
+clean_pzcl_kernel: $(PZCL_KERNEL_DIRS)
+	@for d in $(PZCL_KERNEL_DIRS); \
+	do \
+	(cd $$d && \
+	echo "" && \
+	echo "*******************************************************" && \
+	echo "* clean in ./$$d" && \
+	echo "*******************************************************" && \
+	$(MAKE) clean); \
+	if [ $$? -ne 0 ]; then \
+		echo "!!!!!! ERROR !!!!!!" ; exit 1; \
+	fi \
+	done
+#####################
+
+-include $(DEPENDS)

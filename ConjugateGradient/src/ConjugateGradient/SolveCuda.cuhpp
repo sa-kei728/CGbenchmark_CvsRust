@@ -1,0 +1,28 @@
+﻿#ifndef SOLVE_CUDA_MAIN_INCLUDED
+#define SOLVE_CUDA_MAIN_INCLUDED
+
+#include <cstddef>
+
+namespace ConjugateGradient
+{
+	// CUDAで解く本体
+	namespace SolveCudaMain
+	{
+		// 疎行列・ベクトル積 y = A x
+		void SpMV(double y[], const double Adata[], const std::size_t Acolumn[], const std::size_t Anonzero[], const double x[], const std::size_t n, const std::size_t maxNonzero);
+
+		// ベクトルの加算y += αx
+		void Add(double y[], const double alpha, const double x[], const std::size_t n);
+		// ベクトルの加算y = x + βy
+		void Add(double y[], const double x[], const double beta, const std::size_t n);
+		// ベクトルの引き算z = x - y
+		void Sub(double z[], const double x[], const double y[], const std::size_t n);
+
+		// ベクトルの内積r = x・y
+		void Dot(const double x[], const double y[], double buffer[], const std::size_t n);
+		// ベクトルの内積r = x・x
+		void Dot(const double x[], double buffer[], const std::size_t n);
+	};
+}
+
+#endif
