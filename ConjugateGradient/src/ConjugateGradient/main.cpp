@@ -1,8 +1,8 @@
 ﻿/**************************************************/
 // 実行するソルバーの種類などのコンパイルスイッチ //
 /**************************************************/
-#define SOLVER_SEQUENTIAL_NATIVE // 普通の逐次実行版
-//#define SOLVER_OPENMP_NATIVE     // OpenMPで並列化しただけ
+#define SOLVER_SEQUENTIAL_NATIVE      // 普通の逐次実行版
+//#define SOLVER_OPENMP_NATIVE     	  // OpenMPで並列化しただけ
 
 /**************/
 // デバッグ用 //
@@ -14,8 +14,9 @@
 
 /**************************************************/
 #include "Problem.hpp"
-
 #include "Solver.hpp"
+#include "Solverust.hpp"
+
 #ifdef SOLVER_SEQUENTIAL_NATIVE
 #include "SolveSequentialNative.hpp"
 #endif
@@ -70,9 +71,16 @@ int main()
 
 #ifdef SOLVER_SEQUENTIAL_NATIVE
 	{
-		std::cout << "SequentialNative, ";
+		//C++
+		std::cout << "SequentialNative[C++], ";
 		ConjugateGradient::SolveSequentialNative solver;
 		ConjugateGradient::Solver::Solve(problem, solver);
+	}
+	{
+		//Rust
+		std::cout << "SequentialNative[Rust], ";
+		ConjugateGradient::SolveRust solver_rust;
+		ConjugateGradient::Solver::Solve(problem, solver_rust);
 	}
 #endif
 

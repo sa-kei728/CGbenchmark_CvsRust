@@ -3,21 +3,30 @@ CFLAGS   = -g -m64 -MMD -MP -Wall -Wextra -Werror -Wfatal-errors -Wno-sign-compa
 LDFLAGS  = ${CFLAGS} -lgomp
 LIBS     =
 INCLUDE  =
+RUSTC    = rustc
+RSFLAGS  = --crate-type="cdylib"
 TARGET   = ./$(shell basename `readlink -f .`)
 OBJDIR   = ./obj
 ifeq "$(strip $(OBJDIR))" ""
   OBJDIR = .
 endif
-SOURCES  = $(wildcard *.cpp)
-OBJECTS  = $(addprefix $(OBJDIR)/, $(SOURCES:.cpp=.o))
-DEPENDS  = $(OBJECTS:.o=.d)
+SOURCES_C  = $(wildcard *.cpp)
+OBJECTS_C  = $(addprefix $(OBJDIR)/, $(SOURCES_C:.cpp=.o))
+DEPENDS    = $(OBJECTS:.o=.d)
+SOURCES_RS = $(wildcard *.rs)
+OBJECTS_RS = $(addprefix $(OBJDIR)/lib, $(SOURCES_RS:.rs=.so))
+LDFLAGS   += $(addprefix -l, $(SOURCES_RS:.rs=)) -L$(OBJDIR) -Xlinker -rpath -Xlinker $(OBJDIR)
 
-$(TARGET): $(OBJECTS) $(LIBS)
-	$(COMPILER) -o $@ $^ $(LDFLAGS)
+$(TARGET): $(OBJECTS_C) $(OBJECTS_RS) $(LIBS)
+	$(COMPILER) -o $@ $(OBJECTS_C) $(LIBS) $(LDFLAGS)
 
 $(OBJDIR)/%.o: %.cpp
 	@[ -d $(OBJDIR) ] || mkdir -p $(OBJDIR)
 	$(COMPILER) $(CFLAGS) $(INCLUDE) -o $@ -c $<
+
+$(OBJDIR)/lib%.so: %.rs
+	@[ -d $(OBJDIR) ] || mkdir -p $(OBJDIR)
+	$(RUSTC) $(RSFLAGS) $< -o $@
 
 all: clean $(TARGET)
 
