@@ -31,7 +31,7 @@ $(OBJDIR)/lib%.so: %.rs
 all: clean $(TARGET)
 
 clean:
-	rm -f $(OBJECTS) $(DEPENDS) $(TARGET)
+	rm -f $(OBJECTS_C) $(OBJECTS_RS) $(DEPENDS) $(TARGET)
 	@rmdir --ignore-fail-on-non-empty `readlink -f $(OBJDIR)`
 
 -include $(DEPENDS)
