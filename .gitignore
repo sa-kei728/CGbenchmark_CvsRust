@@ -1,4 +1,5 @@
 ConjugateGradient/src/ConjugateGradient/ConjugateGradient
 ConjugateGradient/src/ConjugateGradient/Makefile
+ConjugateGradient/src/ConjugateGradient/obj/*
 rust_test/a.out
 rust_test/librust.so
