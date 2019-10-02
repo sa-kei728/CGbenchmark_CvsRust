@@ -1,5 +1,29 @@
 #![crate_type = "cdylib"]
 
+// y = Ax
+#[no_mangle]
+pub extern fn SpMV(y_ptr: *mut f64, data_ptr : *const f64, column_ptr : *const usize, nonzero_ptr : *const usize,
+                    x_ptr : *const f64, max_nonzero : usize, n : usize){
+    let x = unsafe{ std::slice::from_raw_parts(x_ptr, n) };
+    let data = unsafe{ std::slice::from_raw_parts(data_ptr, n * max_nonzero) };
+    let column = unsafe{ std::slice::from_raw_parts(column_ptr, n * max_nonzero) };
+    let nonzero = unsafe{ std::slice::from_raw_parts(nonzero_ptr, n) };
+    let y = unsafe{ std::slice::from_raw_parts_mut(y_ptr, n) };
+
+    for i in 0..n {
+        let nnz = nonzero[i];
+        let mut y_i = 0f64;
+        for idx in 0..nnz {
+            let a_ij = data[i * max_nonzero + idx];
+            let j = column[i * max_nonzero + idx];
+            let x_j = x[j];
+
+            y_i += a_ij * x_j;
+        }
+        y[i] = y_i;
+    }
+}
+
 // vector add y = x + βy
 #[no_mangle]
 pub extern fn Add(y_ptr: *mut f64, x_ptr : *const f64, n : usize, beta : f64){

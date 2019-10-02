@@ -4,12 +4,13 @@
 
 #include "Problem.hpp"
 extern "C" {
+	void SpMV(double*, const double*, const std::size_t*, const std::size_t*, const double*, std::size_t, std::size_t);
 	void Add(double*, const double*, std::size_t, double);
 	void AddSelf(double*, const double*, std::size_t, double);
 	void Sub(double*, const double*, const double*, std::size_t);
 	double Dot(const double*, const double*, std::size_t);
 	double DotSelf(const double*, std::size_t);
-	void Copy(double*, const double*, std::size_t); 
+	void Copy(double*, const double*, std::size_t);
 }
 
 namespace ConjugateGradient
@@ -22,22 +23,7 @@ namespace ConjugateGradient
 		static void SpMV(Problem::VectorT& y, const Problem::MatrixT& A, const Problem::VectorT& x)
 		{
 			const auto n = y.N;
-			for(auto i = decltype(n)(0); i < n; i++)
-			{
-				double y_i = 0;
-
-				const auto nnz = A.Nonzero(i);
-				for(auto idx = decltype(nnz)(0); idx < nnz; idx++)
-				{
-					const auto a_ij = A.Data(i, idx);
-					const auto j = A.Column(i, idx);
-					const auto x_j = x[j];
-					const auto ax = a_ij * x_j;
-					y_i += ax;
-				}
-
-				y[i] = y_i;
-			}
+			::SpMV(y(), A.Data(), A.Column(), A.Nonzero(), x(), A.MaxNonzeroCount, n);
 		}
 
 		// ベクトルの加算y += αx
