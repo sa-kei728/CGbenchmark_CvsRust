@@ -3,7 +3,10 @@
 #include "Problem.hpp"
 
 #include "Problem.hpp"
-extern "C" void Add(const double*, const double*, std::size_t, double);
+extern "C" {
+	void Add(const double*, const double*, std::size_t, double);
+	void AddSelf(const double*, const double*, std::size_t, double);
+}
 
 namespace ConjugateGradient
 {
@@ -37,14 +40,7 @@ namespace ConjugateGradient
 		static void Add(Problem::VectorT& y, const double alpha, const Problem::VectorT& x)
 		{
 			const auto n = y.N;
-			for(auto i = decltype(n)(0); i < n; i++)
-			{
-				const auto x_i = x[i];
-				auto y_i = y[i];
-
-				y_i += alpha * x_i;
-				y[i] = y_i;
-			}
+			::AddSelf(y(), x(), n, alpha);
 		}
 		// ベクトルの加算y = x + βy
 		static void Add(Problem::VectorT& y, const Problem::VectorT& x, const double beta)
