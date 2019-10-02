@@ -58,3 +58,14 @@ pub extern fn DotSelf(x_ptr : *const f64, n : usize) -> f64 {
     }
     return r;
 }
+
+// vector copy y = x
+#[no_mangle]
+pub extern fn Copy(y_ptr : *mut f64, x_ptr : *const f64, n : usize) {
+    let x = unsafe{ std::slice::from_raw_parts(x_ptr, n) };
+    let y = unsafe{ std::slice::from_raw_parts_mut(y_ptr, n) };
+
+    for i in 0..n {
+        y[i] = x[i];
+    }
+}

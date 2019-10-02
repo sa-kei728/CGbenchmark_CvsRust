@@ -9,6 +9,7 @@ extern "C" {
 	void Sub(double*, const double*, const double*, std::size_t);
 	double Dot(const double*, const double*, std::size_t);
 	double DotSelf(const double*, std::size_t);
+	void Copy(double*, const double*, std::size_t); 
 }
 
 namespace ConjugateGradient
@@ -75,12 +76,7 @@ namespace ConjugateGradient
 		static void Copy(Problem::VectorT& y, const Problem::VectorT& x)
 		{
 			const auto n = x.N;
-			for(auto i = decltype(n)(0); i < n; i++)
-			{
-				const auto x_i = x[i];
-
-				y[i] = x_i;
-			}
+			::Copy(y(), x(), n);
 		}
 
 		// 解ベクトル
