@@ -4,9 +4,10 @@
 
 #include "Problem.hpp"
 extern "C" {
-	void Add(const double*, const double*, std::size_t, double);
-	void AddSelf(const double*, const double*, std::size_t, double);
+	void Add(double*, const double*, std::size_t, double);
+	void AddSelf(double*, const double*, std::size_t, double);
 	void Sub(double*, const double*, const double*, std::size_t);
+	double Dot(const double*, const double*, std::size_t);
 }
 
 namespace ConjugateGradient
@@ -58,17 +59,8 @@ namespace ConjugateGradient
 		// ベクトルの内積r = x・y
 		static auto Dot(const Problem::VectorT& x, const Problem::VectorT& y)
 		{
-			auto r = std::remove_reference_t<decltype(x)>::Type(0);
-
 			const auto n = y.N;
-			for(auto i = decltype(n)(0); i < n; i++)
-			{
-				const auto x_i = x[i];
-				const auto y_i = y[i];
-
-				const auto xy = x_i * y_i;
-				r += xy;
-			}
+			auto r = ::Dot(x(), y(), n);
 			return r;
 		}
 		// ベクトルの内積r = x・x

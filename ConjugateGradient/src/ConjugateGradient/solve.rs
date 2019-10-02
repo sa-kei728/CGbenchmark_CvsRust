@@ -7,7 +7,7 @@ pub extern fn Add(y_ptr: *mut f64, x_ptr : *const f64, n : usize, beta : f64){
     let y = unsafe{ std::slice::from_raw_parts_mut(y_ptr, n) };
 
     for i in 0..n {
-        y[i] = x[i] + beta * y[i]
+        y[i] = x[i] + beta * y[i];
     }
 }
 
@@ -18,7 +18,7 @@ pub extern fn AddSelf(y_ptr: *mut f64, x_ptr : *const f64, n : usize, alpha : f6
     let y = unsafe{ std::slice::from_raw_parts_mut(y_ptr, n) };
 
     for i in 0..n {
-        y[i] = alpha * x[i]
+        y[i] = alpha * x[i];
     }
 }
 
@@ -30,6 +30,19 @@ pub extern fn Sub(z_ptr : *mut f64, x_ptr : *const f64, y_ptr: *const f64, n : u
     let z = unsafe{ std::slice::from_raw_parts_mut(z_ptr, n) };
 
     for i in 0..n {
-        z[i] = x[i] - y[i]
+        z[i] = x[i] - y[i];
     }
+}
+
+// vector sub z = x - y
+#[no_mangle]
+pub extern fn Dot(x_ptr : *const f64, y_ptr: *const f64, n : usize) -> f64 {
+    let x = unsafe{ std::slice::from_raw_parts(x_ptr, n) };
+    let y = unsafe{ std::slice::from_raw_parts(y_ptr, n) };
+    let mut r = 0f64;
+
+    for i in 0..n {
+        r += x[i] * y[i];
+    }
+    return r;
 }
