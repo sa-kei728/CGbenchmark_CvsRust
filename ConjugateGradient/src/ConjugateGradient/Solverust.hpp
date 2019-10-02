@@ -8,6 +8,7 @@ extern "C" {
 	void AddSelf(double*, const double*, std::size_t, double);
 	void Sub(double*, const double*, const double*, std::size_t);
 	double Dot(const double*, const double*, std::size_t);
+	double DotSelf(const double*, std::size_t);
 }
 
 namespace ConjugateGradient
@@ -60,22 +61,14 @@ namespace ConjugateGradient
 		static auto Dot(const Problem::VectorT& x, const Problem::VectorT& y)
 		{
 			const auto n = y.N;
-			auto r = ::Dot(x(), y(), n);
+			const auto r = ::Dot(x(), y(), n);
 			return r;
 		}
 		// ベクトルの内積r = x・x
 		static auto Dot(const Problem::VectorT& x)
 		{
-			auto r = std::remove_reference_t<decltype(x)>::Type(0);
-
 			const auto n = x.N;
-			for(auto i = decltype(n)(0); i < n; i++)
-			{
-				const auto x_i = x[i];
-
-				const auto xx = x_i * x_i;
-				r += xx;
-			}
+			const auto r = ::DotSelf(x(), n);
 			return r;
 		}
 		// ベクトルの複製y = x

@@ -34,7 +34,7 @@ pub extern fn Sub(z_ptr : *mut f64, x_ptr : *const f64, y_ptr: *const f64, n : u
     }
 }
 
-// vector sub z = x - y
+// vector dot r = x ・ y
 #[no_mangle]
 pub extern fn Dot(x_ptr : *const f64, y_ptr: *const f64, n : usize) -> f64 {
     let x = unsafe{ std::slice::from_raw_parts(x_ptr, n) };
@@ -43,6 +43,18 @@ pub extern fn Dot(x_ptr : *const f64, y_ptr: *const f64, n : usize) -> f64 {
 
     for i in 0..n {
         r += x[i] * y[i];
+    }
+    return r;
+}
+
+// vector dot r = x ・ x
+#[no_mangle]
+pub extern fn DotSelf(x_ptr : *const f64, n : usize) -> f64 {
+    let x = unsafe{ std::slice::from_raw_parts(x_ptr, n) };
+    let mut r = 0f64;
+
+    for i in 0..n {
+        r += x[i] * x[i];
     }
     return r;
 }
