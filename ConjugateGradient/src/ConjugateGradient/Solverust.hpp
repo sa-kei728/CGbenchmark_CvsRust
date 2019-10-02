@@ -6,6 +6,7 @@
 extern "C" {
 	void Add(const double*, const double*, std::size_t, double);
 	void AddSelf(const double*, const double*, std::size_t, double);
+	void Sub(double*, const double*, const double*, std::size_t);
 }
 
 namespace ConjugateGradient
@@ -52,14 +53,7 @@ namespace ConjugateGradient
 		static void Sub(Problem::VectorT& z, const Problem::VectorT& x, const Problem::VectorT& y)
 		{
 			const auto n = y.N;
-			for(auto i = decltype(n)(0); i < n; i++)
-			{
-				const auto x_i = x[i];
-				const auto y_i = y[i];
-
-				const auto z_i = x_i - y_i;
-				z[i] = z_i;
-			}
+			::Sub(z(), x(), y(), n);
 		}
 		// ベクトルの内積r = x・y
 		static auto Dot(const Problem::VectorT& x, const Problem::VectorT& y)
