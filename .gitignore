@@ -3,3 +3,4 @@ ConjugateGradient/src/ConjugateGradient/Makefile
 ConjugateGradient/src/ConjugateGradient/obj/*
 rust_test/a.out
 rust_test/librust.so
+rust_test/array_test
